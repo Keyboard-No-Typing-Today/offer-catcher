@@ -20,6 +20,7 @@ frontend/android/.idea/
 *.apk
 *.aab
 !release/OfferCatcher-v1.0.0.apk
+!release/OfferCatcher-v1.1.0.apk
 *.keystore
 *.jks
 keystore.properties

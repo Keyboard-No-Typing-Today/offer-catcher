@@ -142,7 +142,7 @@ On Wi-Fi, point **我的 → AI 服务 → 代理地址** at **http://YOUR-LAN-I
 ### 4. Physical-device checklist
 
 1. Enable USB debugging, connect the phone, accept the RSA prompt.
-2. adb install -r release/OfferCatcher-v1.0.0.apk.
+2. adb install -r release/OfferCatcher-v1.1.0.apk.
 3. Run adb reverse tcp:3001 tcp:3001 and start the proxy.
 4. Open the app, load the sample or import a resume, analyze a JD, and try the assistant.
 5. For the course video, record the home → analysis → result → tracker flow and the AI-enhanced result.
@@ -174,7 +174,7 @@ frontend/            React app + Capacitor Android project
 backend/             Express AI proxy, prompts, embeddings, RAG
 shared/              normalized job catalogue + field metadata
 docs/                proposal, report, testing, demo script, slides, screenshots
-release/             signed APK (v1.0.0)
+release/             signed APK (v1.1.0)
 ~~~
 
 ## Course deliverables
@@ -188,7 +188,7 @@ release/             signed APK (v1.0.0)
 | Demo video script | [docs/demo-script.md](docs/demo-script.md) |
 | Design spec | [docs/superpowers/specs/2026-11-24-offer-catcher-design.md](docs/superpowers/specs/2026-11-24-offer-catcher-design.md) |
 | Testing evidence | [docs/testing.md](docs/testing.md) |
-| APK | [release/OfferCatcher-v1.0.0.apk](release/OfferCatcher-v1.0.0.apk) |
+| APK | [release/OfferCatcher-v1.1.0.apk](release/OfferCatcher-v1.1.0.apk) |
 
 ## Scope and non-goals
 

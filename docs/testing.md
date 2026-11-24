@@ -115,4 +115,4 @@ Installed the debug APK with adb, mapped the proxy with **adb reverse tcp:3001 t
 
 - Screenshots: [assets/screens](assets/screens)
 - Design spec: [superpowers/specs/2026-11-24-offer-catcher-design.md](superpowers/specs/2026-11-24-offer-catcher-design.md)
-- APK: [../release/OfferCatcher-v1.0.0.apk](../release/OfferCatcher-v1.0.0.apk)
+- APK: [../release/OfferCatcher-v1.1.0.apk](../release/OfferCatcher-v1.1.0.apk)

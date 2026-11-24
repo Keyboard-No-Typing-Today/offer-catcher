@@ -3,7 +3,7 @@
 **Course:** EE5415 Mobile Applications Design and Development, City University of Hong Kong
 **Project:** Individual project
 **Author:** [Student Name / Student ID]
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Date:** November 2026
 
 ## Abstract
