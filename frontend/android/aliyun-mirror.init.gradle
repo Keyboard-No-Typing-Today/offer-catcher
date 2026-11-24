@@ -1,0 +1,15 @@
+// Put Aliyun mirrors before Google/Maven Central for fast resolution on mainland China networks.
+def addMirrors = { repositories ->
+    repositories.maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    repositories.maven { url 'https://maven.aliyun.com/repository/google' }
+    repositories.maven { url 'https://maven.aliyun.com/repository/central' }
+}
+
+gradle.beforeProject { project ->
+    addMirrors(project.buildscript.repositories)
+    addMirrors(project.repositories)
+}
+
+settingsEvaluated { settings ->
+    addMirrors(settings.pluginManagement.repositories)
+}

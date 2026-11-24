@@ -1,0 +1,35 @@
+node_modules/
+.npm-cache/
+.tmp/
+.env
+.env.local
+.env.*.local
+*.log
+
+# Build output
+frontend/dist/
+dist/
+coverage/
+
+# Capacitor / Android
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/local.properties
+frontend/android/.idea/
+*.apk
+*.aab
+!release/OfferCatcher-v1.0.0.apk
+*.keystore
+*.jks
+keystore.properties
+
+# Legacy data / media
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/.cache/
+backend/.lancedb/
+images
+resumes/
+# Local build helpers
+frontend/android/keystore/

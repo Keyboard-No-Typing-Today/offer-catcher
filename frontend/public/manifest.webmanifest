@@ -1,0 +1,17 @@
+{
+  "name": "Offer 捕手",
+  "short_name": "Offer 捕手",
+  "description": "把每一次投递，变成一次有准备的出击。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F5F0E6",
+  "theme_color": "#F5F0E6",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

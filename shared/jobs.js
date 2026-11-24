@@ -1,0 +1,481 @@
+export default [
+  {
+    "id": "job-001",
+    "numericId": 1,
+    "title": "前端开发实习生",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "200-300元/天",
+    "description": "参与腾讯云控制台前端开发，使用 React + TypeScript 技术栈，负责业务模块开发与性能优化。",
+    "requirements": "1. 熟悉 HTML/CSS/JavaScript 基础\n2. 了解 React 或 Vue 等主流框架\n3. 有项目经验者优先\n4. 本科及以上学历",
+    "field": "frontend",
+    "type": "internship",
+    "tags": [
+      "React",
+      "Vue",
+      "TypeScript",
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ]
+  },
+  {
+    "id": "job-002",
+    "numericId": 2,
+    "title": "前端开发工程师",
+    "company": "字节跳动",
+    "location": "北京",
+    "salary": "25K-50K",
+    "description": "负责抖音电商前端架构设计和高性能页面开发，推动组件化和工程化建设。",
+    "requirements": "1. 3年以上前端经验\n2. 精通 React/Vue\n3. 熟悉 Webpack/Vite 等构建工具\n4. 有大型项目经验",
+    "field": "frontend",
+    "type": "full-time",
+    "tags": [
+      "React",
+      "Vue"
+    ]
+  },
+  {
+    "id": "job-003",
+    "numericId": 3,
+    "title": "Web前端开发",
+    "company": "阿里巴巴",
+    "location": "杭州",
+    "salary": "20K-40K",
+    "description": "参与淘宝首页及核心交易链路前端开发，关注页面加载速度和用户体验。",
+    "requirements": "1. 扎实的 JS/CSS 基础\n2. 熟悉 React 生态\n3. 了解 Node.js\n4. 良好的沟通能力",
+    "field": "frontend",
+    "type": "full-time",
+    "tags": [
+      "React",
+      "CSS",
+      "Node.js"
+    ]
+  },
+  {
+    "id": "job-004",
+    "numericId": 4,
+    "title": "前端架构师",
+    "company": "美团",
+    "location": "北京",
+    "salary": "35K-60K",
+    "description": "负责美团到店事业群前端技术架构设计，推动微前端和 SSR 落地。",
+    "requirements": "1. 5年以上前端经验\n2. 深入理解浏览器原理\n3. 有架构设计经验\n4. 熟悉服务端渲染",
+    "field": "frontend",
+    "type": "full-time",
+    "tags": []
+  },
+  {
+    "id": "job-005",
+    "numericId": 5,
+    "title": "H5前端开发",
+    "company": "网易",
+    "location": "广州",
+    "salary": "18K-35K",
+    "description": "负责网易云音乐 H5 页面和活动页开发，关注动效和用户体验。",
+    "requirements": "1. 精通移动端适配\n2. 熟悉 Canvas/SVG 动画\n3. 了解 Hybrid 开发\n4. 对用户体验有追求",
+    "field": "frontend",
+    "type": "full-time",
+    "tags": []
+  },
+  {
+    "id": "job-006",
+    "numericId": 6,
+    "title": "React 前端开发",
+    "company": "拼多多",
+    "location": "上海",
+    "salary": "30K-55K",
+    "description": "参与拼多多商家端前端开发，使用 React + Ant Design 技术体系。",
+    "requirements": "1. 精通 React 技术栈\n2. 熟悉 TypeScript\n3. 了解电商业务\n4. 能独立负责模块",
+    "field": "frontend",
+    "type": "full-time",
+    "tags": [
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "job-007",
+    "numericId": 7,
+    "title": "后端开发实习生",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "200-300元/天",
+    "description": "参与腾讯文档后端服务开发，使用 Node.js/Go，负责 API 设计和数据库优化。",
+    "requirements": "1. 熟悉至少一门后端语言\n2. 了解数据库基础\n3. 有项目经验加分\n4. 学习能力强",
+    "field": "backend",
+    "type": "internship",
+    "tags": [
+      "Node.js",
+      "Go"
+    ]
+  },
+  {
+    "id": "job-008",
+    "numericId": 8,
+    "title": "Java后端开发",
+    "company": "阿里巴巴",
+    "location": "杭州",
+    "salary": "25K-50K",
+    "description": "负责电商交易核心链路后端开发，高并发系统设计与性能优化。",
+    "requirements": "1. 精通 Java/Spring\n2. 熟悉分布式系统\n3. 了解消息队列\n4. 3年以上经验",
+    "field": "backend",
+    "type": "full-time",
+    "tags": [
+      "Java",
+      "性能优化"
+    ]
+  },
+  {
+    "id": "job-009",
+    "numericId": 9,
+    "title": "Go后端工程师",
+    "company": "字节跳动",
+    "location": "北京",
+    "salary": "30K-60K",
+    "description": "负责飞书后台服务开发，微服务架构设计与容器化部署。",
+    "requirements": "1. 精通 Go 语言\n2. 熟悉 gRPC/Protobuf\n3. 了解 K8s/Docker\n4. 有高并发经验",
+    "field": "backend",
+    "type": "full-time",
+    "tags": [
+      "Go",
+      "Docker"
+    ]
+  },
+  {
+    "id": "job-010",
+    "numericId": 10,
+    "title": "Node.js 后端开发",
+    "company": "美团",
+    "location": "北京",
+    "salary": "25K-45K",
+    "description": "负责美团 BFF 层开发和 SSR 服务，提升页面首屏加载性能。",
+    "requirements": "1. 精通 Node.js\n2. 熟悉 Express/Koa\n3. 了解 Redis\n4. 有性能优化经验",
+    "field": "backend",
+    "type": "full-time",
+    "tags": [
+      "Node.js",
+      "性能优化"
+    ]
+  },
+  {
+    "id": "job-011",
+    "numericId": 11,
+    "title": "Python后端",
+    "company": "滴滴",
+    "location": "北京",
+    "salary": "25K-50K",
+    "description": "负责滴滴出行后端算法服务开发，数据处理和 API 网关建设。",
+    "requirements": "1. 精通 Python/Django\n2. 了解机器学习基础\n3. 熟悉 PostgreSQL\n4. 有大数据经验",
+    "field": "backend",
+    "type": "full-time",
+    "tags": [
+      "Python",
+      "Go",
+      "SQL",
+      "机器学习"
+    ]
+  },
+  {
+    "id": "job-012",
+    "numericId": 12,
+    "title": "产品实习生",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "150-250元/天",
+    "description": "参与腾讯视频产品策划，负责用户需求分析和功能优化方案设计。",
+    "requirements": "1. 对产品有热情\n2. 逻辑清晰\n3. 有数据分析能力\n4. 沟通表达好",
+    "field": "product",
+    "type": "internship",
+    "tags": [
+      "数据分析"
+    ]
+  },
+  {
+    "id": "job-013",
+    "numericId": 13,
+    "title": "高级产品经理",
+    "company": "字节跳动",
+    "location": "北京",
+    "salary": "35K-65K",
+    "description": "负责抖音电商增长产品方向，制定增长策略和数据驱动决策。",
+    "requirements": "1. 5年产品经验\n2. 擅长数据分析\n3. 有电商增长经验\n4. 结果导向",
+    "field": "product",
+    "type": "full-time",
+    "tags": [
+      "数据分析"
+    ]
+  },
+  {
+    "id": "job-014",
+    "numericId": 14,
+    "title": "AI产品经理",
+    "company": "百度",
+    "location": "北京",
+    "salary": "30K-55K",
+    "description": "负责文心一言产品规划和功能迭代，深入理解 AI 技术和用户场景。",
+    "requirements": "1. 了解 AI/NLP 技术\n2. 3年产品经验\n3. 有 AI 产品经验优先\n4. 技术背景加分",
+    "field": "product",
+    "type": "full-time",
+    "tags": [
+      "NLP"
+    ]
+  },
+  {
+    "id": "job-015",
+    "numericId": 15,
+    "title": "B端产品经理",
+    "company": "阿里巴巴",
+    "location": "杭州",
+    "salary": "28K-50K",
+    "description": "负责钉钉开放平台产品规划，设计 API 和 ISV 生态产品方案。",
+    "requirements": "1. 熟悉 B 端产品\n2. 了解开放平台\n3. 有技术背景\n4. 逻辑思维强",
+    "field": "product",
+    "type": "full-time",
+    "tags": []
+  },
+  {
+    "id": "job-016",
+    "numericId": 16,
+    "title": "UI设计实习生",
+    "company": "网易",
+    "location": "广州",
+    "salary": "150-200元/天",
+    "description": "参与网易云音乐界面设计，负责视觉规范和组件库维护。",
+    "requirements": "1. 设计相关专业\n2. 熟练 Figma/Sketch\n3. 有设计作品集\n4. 审美好",
+    "field": "design",
+    "type": "internship",
+    "tags": [
+      "Figma",
+      "Sketch"
+    ]
+  },
+  {
+    "id": "job-017",
+    "numericId": 17,
+    "title": "资深UI设计师",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "25K-45K",
+    "description": "负责微信支付设计系统建设，推动设计规范和组件化落地。",
+    "requirements": "1. 5年 UI 经验\n2. 有设计系统经验\n3. 熟悉移动端设计\n4. 有团队管理经验",
+    "field": "design",
+    "type": "full-time",
+    "tags": []
+  },
+  {
+    "id": "job-018",
+    "numericId": 18,
+    "title": "UX设计师",
+    "company": "字节跳动",
+    "location": "北京",
+    "salary": "28K-55K",
+    "description": "负责抖音创作者端用户体验设计，通过用户研究驱动产品优化。",
+    "requirements": "1. 人机交互背景\n2. 擅长用户研究\n3. 有成熟项目案例\n4. 3年经验",
+    "field": "design",
+    "type": "full-time",
+    "tags": [
+      "用户研究"
+    ]
+  },
+  {
+    "id": "job-019",
+    "numericId": 19,
+    "title": "数据分析实习生",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "200-300元/天",
+    "description": "参与腾讯游戏数据分析，使用 SQL 和 Python 进行用户行为分析。",
+    "requirements": "1. 统计/数学相关专业\n2. 熟练 SQL/Python\n3. 了解 A/B 测试\n4. 逻辑清晰",
+    "field": "data",
+    "type": "internship",
+    "tags": [
+      "Python",
+      "SQL",
+      "数据分析",
+      "A/B 测试"
+    ]
+  },
+  {
+    "id": "job-020",
+    "numericId": 20,
+    "title": "数据分析师",
+    "company": "美团",
+    "location": "北京",
+    "salary": "22K-40K",
+    "description": "负责美团外卖业务数据分析，构建指标体系并推动数据驱动决策。",
+    "requirements": "1. 精通 SQL\n2. 熟悉 Python/R\n3. 了解数据可视化\n4. 2年以上经验",
+    "field": "data",
+    "type": "full-time",
+    "tags": [
+      "Python",
+      "SQL",
+      "数据分析"
+    ]
+  },
+  {
+    "id": "job-021",
+    "numericId": 21,
+    "title": "大数据开发工程师",
+    "company": "阿里巴巴",
+    "location": "杭州",
+    "salary": "30K-55K",
+    "description": "负责数据中台建设，包括数据仓库建模、ETL 流程和实时计算。",
+    "requirements": "1. 精通 Spark/Flink\n2. 了解数据仓库\n3. 有 Java/Scala 经验\n4. 3年以上经验",
+    "field": "data",
+    "type": "full-time",
+    "tags": [
+      "Java",
+      "Spark",
+      "Flink"
+    ]
+  },
+  {
+    "id": "job-022",
+    "numericId": 22,
+    "title": "测试开发实习生",
+    "company": "字节跳动",
+    "location": "北京",
+    "salary": "200-300元/天",
+    "description": "参与自动化测试框架开发和 CI/CD 流程优化，编写测试用例。",
+    "requirements": "1. 计算机相关专业\n2. 了解测试理论\n3. 有编程基础\n4. 细心负责",
+    "field": "testing",
+    "type": "internship",
+    "tags": [
+      "自动化测试"
+    ]
+  },
+  {
+    "id": "job-023",
+    "numericId": 23,
+    "title": "高级测试工程师",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "25K-45K",
+    "description": "负责微信支付质量保障，设计测试方案并推动自动化测试覆盖。",
+    "requirements": "1. 5年测试经验\n2. 精通自动化测试\n3. 熟悉金融业务\n4. 有性能测试经验",
+    "field": "testing",
+    "type": "full-time",
+    "tags": [
+      "自动化测试"
+    ]
+  },
+  {
+    "id": "job-024",
+    "numericId": 24,
+    "title": "运维开发实习生",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "200-300元/天",
+    "description": "参与腾讯云基础设施运维平台开发，关注自动化运维和监控体系。",
+    "requirements": "1. 计算机相关专业\n2. 了解 Linux\n3. 有 Python/Go 基础\n4. 对运维有兴趣",
+    "field": "devops",
+    "type": "internship",
+    "tags": [
+      "Python",
+      "Go"
+    ]
+  },
+  {
+    "id": "job-025",
+    "numericId": 25,
+    "title": "SRE工程师",
+    "company": "阿里巴巴",
+    "location": "杭州",
+    "salary": "30K-55K",
+    "description": "负责双11大促保障，建设容灾体系和全链路压测平台。",
+    "requirements": "1. 精通 Linux 系统\n2. 了解 K8s/Docker\n3. 有大规模运维经验\n4. 5年以上经验",
+    "field": "devops",
+    "type": "full-time",
+    "tags": [
+      "Docker"
+    ]
+  },
+  {
+    "id": "job-026",
+    "numericId": 26,
+    "title": "算法实习生",
+    "company": "百度",
+    "location": "北京",
+    "salary": "250-350元/天",
+    "description": "参与搜索排序算法优化，使用深度学习技术提升搜索结果相关性。",
+    "requirements": "1. 计算机/AI相关硕士\n2. 熟悉 PyTorch/TensorFlow\n3. 有 NLP 经验优先\n4. 发表过论文加分",
+    "field": "algorithm",
+    "type": "internship",
+    "tags": [
+      "深度学习",
+      "NLP"
+    ]
+  },
+  {
+    "id": "job-027",
+    "numericId": 27,
+    "title": "推荐算法工程师",
+    "company": "字节跳动",
+    "location": "北京",
+    "salary": "40K-80K",
+    "description": "负责抖音推荐系统算法优化，提升用户留存和内容消费时长。",
+    "requirements": "1. 精通推荐系统\n2. 熟悉深度学习\n3. 有大规模系统经验\n4. 3年以上经验",
+    "field": "algorithm",
+    "type": "full-time",
+    "tags": [
+      "深度学习"
+    ]
+  },
+  {
+    "id": "job-028",
+    "numericId": 28,
+    "title": "市场实习生",
+    "company": "字节跳动",
+    "location": "北京",
+    "salary": "150-200元/天",
+    "description": "参与抖音市场活动策划和执行，协助社交媒体运营和内容创作。",
+    "requirements": "1. 市场营销相关专业\n2. 了解新媒体运营\n3. 有创意和执行力\n4. 沟通能力强",
+    "field": "marketing",
+    "type": "internship",
+    "tags": []
+  },
+  {
+    "id": "job-029",
+    "numericId": 29,
+    "title": "品牌营销经理",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "25K-45K",
+    "description": "负责腾讯云品牌营销策略制定，策划行业峰会和内容营销项目。",
+    "requirements": "1. 5年品牌经验\n2. 有 B2B 营销经验\n3. 擅长内容策划\n4. 英语流利",
+    "field": "marketing",
+    "type": "full-time",
+    "tags": [
+      "品牌"
+    ]
+  },
+  {
+    "id": "job-030",
+    "numericId": 30,
+    "title": "HR实习生",
+    "company": "阿里巴巴",
+    "location": "杭州",
+    "salary": "150-200元/天",
+    "description": "参与招聘流程支持，协助简历筛选、面试安排和校招项目。",
+    "requirements": "1. 人力资源相关专业\n2. 沟通表达能力好\n3. 细心负责\n4. 有招聘兴趣",
+    "field": "hr",
+    "type": "internship",
+    "tags": [
+      "招聘"
+    ]
+  },
+  {
+    "id": "job-031",
+    "numericId": 31,
+    "title": "HRBP",
+    "company": "腾讯",
+    "location": "深圳",
+    "salary": "20K-40K",
+    "description": "负责技术团队 HRBP 工作，推动人才发展和组织文化建设。",
+    "requirements": "1. 5年 HR 经验\n2. 了解技术团队\n3. 擅长员工关系\n4. 有 OD 经验",
+    "field": "hr",
+    "type": "full-time",
+    "tags": []
+  }
+];

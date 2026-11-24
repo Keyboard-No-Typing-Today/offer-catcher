@@ -1,0 +1,7 @@
+项目经历：
+- 基于 React + TypeScript 开发的电商后台管理系统，实现商品管理、订单处理、数据看板等核心模块
+- 使用 Ant Design Pro 快速搭建页面，封装 10+ 可复用业务组件，代码复用率提升 40%
+- 优化首屏加载速度，代码分割后 FCP 从 3.2s 降低至 1.1s
+- 项目 GitHub Star 200+，获得团队内部最佳项目奖
+
+技能标签：React, TypeScript, Ant Design, Webpack, Git

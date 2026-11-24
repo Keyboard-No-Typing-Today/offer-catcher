@@ -1,0 +1,7 @@
+项目经历：
+- 基于 Go + Gin 框架开发的微服务 API 网关，支持限流、熔断、JWT 认证
+- 使用 Redis 实现分布式缓存，接口平均响应时间从 200ms 优化至 35ms
+- 基于 MySQL + Canal + Kafka 实现实时数据同步，延迟 < 100ms
+- 编写完善的接口文档（OpenAPI 3.0）和单元测试，代码覆盖率 85%+
+
+技能标签：Go, Gin, MySQL, Redis, Docker, gRPC, Kafka

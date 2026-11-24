@@ -1,0 +1,16 @@
+{
+  "name": "offer-catcher",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Offer Catcher — mobile-first job match copilot (EE5415 individual project)",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "test": "npm --prefix frontend test && npm --prefix backend test",
+    "server": "npm --prefix backend run dev",
+    "android:debug": "npm --prefix frontend run android:debug",
+    "android:release": "npm --prefix frontend run android:release"
+  }
+}
