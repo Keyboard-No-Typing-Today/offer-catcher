@@ -2,9 +2,15 @@
 .app-shell { position: relative; min-height: 100dvh; }
 .offline-banner {
   position: sticky; top: 0; z-index: 70; display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: calc(7px + var(--safe-top)) 16px 7px; background: var(--ink); color: var(--paper);
+  padding: calc(7px + var(--safe-top)) 34px 7px 16px; background: var(--ink); color: var(--paper);
   font-size: 11px; letter-spacing: 0.04em;
 }
+.offline-close {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  display: grid; place-items: center; padding: 6px; border: 0; background: transparent;
+  color: var(--paper); opacity: 0.65;
+}
+.offline-close:active { opacity: 1; }
 .network-dot { width: 6px; height: 6px; border-radius: 99px; background: var(--amber); box-shadow: 0 0 0 3px rgba(200, 138, 42, 0.25); }
 
 /* ---------- top bar ---------- */
