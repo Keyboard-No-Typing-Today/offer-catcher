@@ -1,28 +1,35 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import BottomNav from './BottomNav.jsx';
-import Toast from './Toast.jsx';
-import OfflineBanner from './OfflineBanner.jsx';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { TabBar } from 'antd-mobile';
+import { Home, MessageCircle, UserRound } from 'lucide-react';
 import { useCapacitorShell } from '../hooks/useCapacitorShell.js';
-import { useNetworkStatus } from '../hooks/useNetworkStatus.js';
-import { useAiAvailability } from '../hooks/useAiAvailability.js';
 
-const TAB_ROUTES = new Set(['/', '/jobs', '/assistant', '/settings']);
+const TABS = [
+  { key: '/', title: '匹配', icon: <Home size={20} /> },
+  { key: '/assistant', title: '助手', icon: <MessageCircle size={20} /> },
+  { key: '/settings', title: '我的', icon: <UserRound size={20} /> },
+];
 
 export default function AppShell() {
   useCapacitorShell();
-  const online = useNetworkStatus();
-  const aiState = useAiAvailability();
+  const navigate = useNavigate();
   const location = useLocation();
-  const showTabs = TAB_ROUTES.has(location.pathname);
+  const active = TABS.some((tab) => tab.key === location.pathname) ? location.pathname : '/';
 
   return (
-    <div className="app-shell">
-      <OfflineBanner online={online} aiState={aiState} />
-      <main className="app-main">
+    <div className="m-shell">
+      <main className="m-main">
         <Outlet />
       </main>
-      {showTabs ? <BottomNav /> : null}
-      <Toast />
+      <TabBar
+        activeKey={active}
+        onChange={(key) => navigate(key)}
+        safeArea
+        className="m-tabbar"
+      >
+        {TABS.map((tab) => (
+          <TabBar.Item key={tab.key} icon={tab.icon} title={tab.title} />
+        ))}
+      </TabBar>
     </div>
   );
 }

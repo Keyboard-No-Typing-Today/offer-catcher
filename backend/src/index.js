@@ -28,7 +28,7 @@ app.use(cors({
     callback(null, isAllowedOrigin(origin));
   },
 }));
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '12mb' }));
 
 app.get('/api/health', (req, res) => {
   res.json({

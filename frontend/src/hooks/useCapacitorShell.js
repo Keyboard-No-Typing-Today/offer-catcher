@@ -32,7 +32,7 @@ export function useCapacitorShell() {
         listener = await CapacitorApp.addListener('backButton', () => {
           if (handleBack()) return;
           const hash = window.location.hash.replace(/^#/, '') || '/';
-          const tabs = ['/', '/jobs', '/assistant', '/settings'];
+          const tabs = ['/', '/assistant', '/settings'];
           if (hash === '/') {
             CapacitorApp.exitApp();
           } else if (tabs.includes(hash)) {

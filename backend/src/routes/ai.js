@@ -83,6 +83,52 @@ router.post('/ai/chat', async (req, res, next) => {
   }
 });
 
+router.post('/ai/transcribe', async (req, res, next) => {
+  try {
+    const audio = req.body?.audio;
+    if (typeof audio !== 'string' || !audio) {
+      return res.status(400).json({ success: false, message: '缺少音频数据。' });
+    }
+    const buffer = Buffer.from(audio, 'base64');
+    if (buffer.length < 100) {
+      return res.status(400).json({ success: false, message: '音频太短，请重新录制。' });
+    }
+    if (buffer.length > 8 * 1024 * 1024) {
+      return res.status(413).json({ success: false, message: '录音超过 8MB，请控制在 60 秒内。' });
+    }
+    if (!config.chat.apiKey) {
+      return res.status(503).json({ success: false, message: '服务端未配置 DeepSeek API key。' });
+    }
+    const base = config.chat.baseUrl.replace(/\/+$/, '');
+    const endpoint = /\/v1$/i.test(base) ? base.replace(/\/v1$/i, '') + '/v1/tools/asr' : base + '/tools/asr';
+    const form = new FormData();
+    form.append('file', new Blob([buffer], { type: String(req.body?.mimeType || 'audio/wav') }), 'speech.wav');
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + config.chat.apiKey },
+      body: form,
+    });
+    const raw = await response.text();
+    let payload = null;
+    try { payload = raw ? JSON.parse(raw) : null; } catch { payload = null; }
+    if (!response.ok) {
+      throw new AiError(payload?.error?.message || payload?.message || '语音识别失败，请稍后重试。', 'asr_error', response.status);
+    }
+    const text = String(payload?.text || '').trim();
+    if (!text) throw new AiError('没有识别到语音内容，请靠近麦克风重试。', 'asr_empty');
+    res.json({
+      success: true,
+      data: {
+        text,
+        durationMs: Number(payload?.duration_ms) || 0,
+        requestId: payload?.request_id || '',
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/ai/embed', async (req, res, next) => {
   try {
     if (!embeddingEnabled()) {

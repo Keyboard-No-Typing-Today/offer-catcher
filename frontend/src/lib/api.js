@@ -78,3 +78,11 @@ export async function embedWithAi(baseUrl, texts) {
   return request(baseUrl, '/ai/embed', { method: 'POST', body: { texts }, timeoutMs: 45000 });
 }
 
+export async function transcribeAudio(baseUrl, { audio, mimeType = 'audio/wav' }) {
+  return request(baseUrl, '/ai/transcribe', {
+    method: 'POST',
+    body: { audio, mimeType },
+    timeoutMs: 90000,
+  });
+}
+

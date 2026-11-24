@@ -21,13 +21,14 @@
 npm --prefix frontend test
 ~~~
 
-Result: **5 files, 18 tests passed**.
+Result: **6 files, 21 tests passed**.
 
 | File | Covers |
 | --- | --- |
 | resumeProfile.test.js | contact extraction, section split, skills, education, scoring inputs, empty input |
 | jdParser.test.js | title/company, required vs preferred skills, education, location |
 | matchEngine.test.js | weighted score, dimensions, suggestions, empty profile, AI blend, ranking, semantic mapping |
+| roles.test.js | 10 corpus directions, 21 samples, 1024-d Qwen vectors, role-to-JD matching |
 | localAssistant.test.js | job recommendation, tracker summary, empty message |
 | format.test.js | truncation, score labels, initials, date display |
 
@@ -51,47 +52,41 @@ Result: **10 tests passed**.
 npm --prefix frontend run build
 ~~~
 
-Result: success. Main bundle ≈ 420 kB (≈ 134 kB gzip); PDF parser chunk ≈ 538 kB; JSZip chunk ≈ 96 kB; PDF worker ≈ 1.3 MB loaded only on import.
+Result: success. Main bundle ≈ 513 kB (≈ 182 kB gzip, including Ant Design Mobile); PDF parser chunk ≈ 538 kB; JSZip chunk ≈ 96 kB; PDF worker ≈ 1.3 MB loaded only on import.
 
 ## Web end-to-end walkthrough
 
-Playwright mobile viewport (390 × 844, DPR 2) opened every route:
+Playwright mobile viewport (390 × 844, DPR 2) exercised the v2 three-module app:
 
-- welcome → sample → home
-- resume editor
-- analyze JD
-- result (local, then AI-enhanced after ~15 s)
-- job board
-- job detail
-- tracker
-- assistant (AI reply)
-- settings
+- onboarding (no mock sample button)
+- paste a synthetic resume → real local parse → 10 direction rankings with Qwen semantic rank
+- role detail with common points, matched/missing skills and rewrite suggestions
+- assistant: AI reply from the proxy
+- Markdown resume export + browser download (`OfferCatcher-Resume.md`)
+- Me: JSON data export (`offer-catcher-export.json`, 10,374 characters), no console/page errors
+- voice E2E with a fake audio device: record WAV → `/api/ai/transcribe` → DeepSeek ASR transcript inserted into the input
 
-Result: **no console errors, no page errors**; screenshots in [assets/screens](assets/screens).
+Result: **no console errors, no page errors**; screenshots in [assets/screens](assets/screens) (v2-*.png).
 
 ## Android verification (emulator, API 35)
 
-Installed the debug APK with adb, mapped the proxy with **adb reverse tcp:3001 tcp:3001**, and exercised the app over the WebView DevTools protocol.
+Installed the **v2.0.0 signed release APK** (versionCode 3) on the API 35 emulator; proxy via **adb reverse tcp:3001 tcp:3001**.
 
 | Check | Result |
 | --- | --- |
 | Cold start and splash | PASS — cream splash, app loads, splash hides |
 | Status bar and navigation bar | PASS — cream bars, dark icons, gesture handle visible |
-| Sample onboarding → home | PASS |
-| Data persistence across force-stop/relaunch | PASS — profile, analyses and tracker restored from Preferences |
-| Native document picker → PDF import | PASS — 3,284 characters extracted from a 2-page PDF |
-| Local analysis | PASS — result appears immediately |
-| AI enhancement via localhost reverse | PASS — AI badge, semantic score, merged suggestions after ~22 s on the emulator |
-| Assistant chat | PASS — AI reply rendered, Markdown cleaned |
-| Tracker add | PASS — new record appears in the list |
-| Hardware back with sheet open | PASS — sheet closes, route stays |
-| Hardware back on a pushed screen | PASS — returns to the previous route |
-| JSON export via Filesystem | PASS — 25,519-byte file in /sdcard/Documents |
-| Export contains no API keys | PASS — a grep for sk-/apiKey/secret returns 0 matches |
-| Native PDF parser cleanup | Fixed — replaced doc.destroy() with loadingTask.destroy() after pdfjs-dist 6 incompatibility |
-| Scroll reset between routes | Fixed — added ScrollToTop; screens no longer start mid-page |
-| Tracker filter/header overlap | Fixed — moved the Add action into the top bar |
-| Navigation bar color | Fixed — theme sets cream navigation bar and light icons |
+| Three-tab shell (Match / Assistant / Me) | PASS — Ant Design Mobile TabBar, routes switch correctly |
+| Native v2 APK version | PASS — `versionCode 3`, `versionName 2.0.0`, signed |
+| Real profile persistence | PASS — profile remains after force-stop/relaunch |
+| Ant Design Mobile rendering in WebView | PASS — no page errors |
+| Voice permission | Declared in AndroidManifest (`RECORD_AUDIO`); browser fake-audio E2E covers the full WAV → DeepSeek ASR → input path |
+| Markdown export | PASS on web download; native Filesystem target is Documents/OfferCatcher-Resume.md |
+| JSON export | PASS on web (10,374 bytes); no API keys |
+| Hardware back | PASS for sheets and route navigation |
+| Native PDF parser cleanup | Fixed — loadingTask.destroy() after pdfjs-dist 6 incompatibility |
+| React 19 + antd-mobile crash | Fixed — downgraded to React 18.3, page errors eliminated |
+| Android Bluetooth/netsimd emulator crash | Diagnosed as emulator-system issue, not app; Bluetooth disabled |
 
 ## Performance observations
 
@@ -101,18 +96,20 @@ Installed the debug APK with adb, mapped the proxy with **adb reverse tcp:3001 t
 | AI analyze (backend, cached RAG) | ~8.5 s for deepseek-flash |
 | AI analyze in the WebView (emulator) | ~22 s including health check and rendering; local result is visible immediately |
 | AI chat | ~2 s |
-| APK size | 6.1 MB debug / 4.3 MB signed release |
+| APK size | 4.39 MB signed release v2.0.0 |
 | Cold start | Emulator ~3–5 s including splash; a physical device should be faster |
 
 ## Known limitations
 
-- The offline banner reflects the OS network state; the AI proxy can still be reachable through adb reverse or the LAN, which is why the banner says "网络受限 · 本地分析可用" rather than blocking AI.
+- The role profiles are aggregated from 21 resumes (2–3 per direction), so they are a direction reference, not live job postings.
+- OCR of JPG resumes introduces noise; PDF text is cleaner. Raw resumes are git-ignored.
 - The AI proxy is a single-user demo service, not multi-tenant; rate limiting is in-memory.
-- The job catalogue is bundled sample data and is labelled in the app.
+- Native microphone capture is covered by the browser fake-audio E2E and the Android permission declaration, but a real-device voice recording remains part of the physical demo.
+- PDF resume export is deferred; Markdown is the current P0 output.
 - A physical-device video must still be recorded by the project owner; the emulator flow and APK are verified.
 
 ## Evidence
 
 - Screenshots: [assets/screens](assets/screens)
 - Design spec: [superpowers/specs/2026-11-24-offer-catcher-design.md](superpowers/specs/2026-11-24-offer-catcher-design.md)
-- APK: [../release/OfferCatcher-v1.1.0.apk](../release/OfferCatcher-v1.1.0.apk)
+- APK: [../release/OfferCatcher-v2.0.0.apk](../release/OfferCatcher-v2.0.0.apk)
