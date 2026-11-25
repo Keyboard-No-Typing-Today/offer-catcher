@@ -5,7 +5,56 @@ export const STARTER_PROMPTS = [
   '帮我写一段自我介绍',
 ];
 
-export function localMentorReply(message, { profile, topRoles = [] } = {}) {
+
+const ROLE_WORDS = {
+  frontend: [/前端/i, /front[\s-]?end/i, /react/i, /vue/i],
+  backend: [/后端/i, /back[\s-]?end/i, /java/i, /spring/i, /服务端/i],
+  algorithm: [/算法/i, /机器学习/i, /深度学习/i, /nlp/i, /大模型/i, /machine learning/i],
+  product: [/产品经理/i, /产品/i],
+  design: [/ui设计/i, /ux/i, /设计师/i, /视觉设计/i],
+  data: [/数据分析/i, /数据/i],
+  testing: [/测试工程师/i, /测试/i, /qa/i],
+  devops: [/运维/i, /devops/i, /sre/i],
+  marketing: [/市场营销/i, /营销/i, /市场/i],
+  hr: [/人力资源/i, /hrbp/i, /\bhr\b/i, /人力/i],
+};
+
+function findExplicitRole(text, roleMatches = []) {
+  for (const [field, patterns] of Object.entries(ROLE_WORDS)) {
+    if (!patterns.some((pattern) => pattern.test(text))) continue;
+    const match = roleMatches.find((item) => item.role?.field === field);
+    if (match) return match;
+  }
+  return null;
+}
+
+function explicitRoleAnswer(item, roleMatches) {
+  const local = item.local || {};
+  const label = item.role?.label || '目标方向';
+  const missing = (local.missingSkills || []).slice(0, 3);
+  const suggestions = (local.suggestions || []).slice(0, 3);
+  const points = [];
+  for (const skill of missing) {
+    points.push('补「' + skill + '」的可验证证据：在技能栏和至少一个项目 bullet 里写清你用它做了什么、结果是什么。');
+  }
+  for (const suggestion of suggestions) {
+    if (points.length >= 3) break;
+    points.push(suggestion.title + '：' + suggestion.detail);
+  }
+  if (!points.length) points.push('把和目标方向最相关的项目前置，并补充 2–3 个量化结果，证明你的实际产出。');
+  while (points.length < 3) points.push('把简历里的技能从“清单”改成“项目里的证据”，招聘方需要看到你真的用过。');
+  return [
+    '你指定的是「' + label + '」方向。按你当前简历，本地匹配 ' + (item.score ?? local.score ?? 0) + '/100。',
+    '',
+    '这个方向最该补的 3 个点：',
+    ...points.slice(0, 3).map((point, index) => (index + 1) + '. ' + point),
+    '',
+    missing.length ? '当前缺口：' + missing.join('、') + '。' : '当前没有明显的硬技能缺口，优先把已有经历写得更可验证。',
+    '下一步：把这份简历按「' + label + '」重写一版，再回来对比分数。',
+  ].join('\n');
+}
+
+export function localMentorReply(message, { profile, topRoles = [], roleMatches = [] } = {}) {
   const text = String(message || '').trim();
   if (!profile) {
     return '你还没有导入简历。先在「匹配」页导入 PDF/DOCX 或粘贴文本，我才能根据你的真实经历回答。';
@@ -15,6 +64,9 @@ export function localMentorReply(message, { profile, topRoles = [] } = {}) {
   if (!text || /你好|hi|hello|在吗/i.test(text)) {
     return '你好，我是你的求职助手。基于你导入的简历，我可以帮你看方向、改简历、准备面试问题。';
   }
+  const explicit = findExplicitRole(text, roleMatches);
+  if (explicit) return explicitRoleAnswer(explicit, roleMatches);
+
   if (/适合|方向|岗位|投什么|推荐/i.test(text)) {
     const lines = topRoles.slice(0, 3).map((item, index) => {
       const lacking = (item.local?.missingSkills || []).slice(0, 2).join('、') || '暂无明显缺口';

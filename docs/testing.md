@@ -21,7 +21,7 @@
 npm --prefix frontend test
 ~~~
 
-Result: **6 files, 21 tests passed**.
+Result: **7 files, 23 tests passed**.
 
 | File | Covers |
 | --- | --- |
@@ -29,6 +29,7 @@ Result: **6 files, 21 tests passed**.
 | jdParser.test.js | title/company, required vs preferred skills, education, location |
 | matchEngine.test.js | weighted score, dimensions, suggestions, empty profile, AI blend, ranking, semantic mapping |
 | roles.test.js | 10 corpus directions, 21 samples, 1024-d Qwen vectors, role-to-JD matching |
+| localMentor.test.js | explicit named-direction answer, nearest-direction fallback |
 | localAssistant.test.js | job recommendation, tracker summary, empty message |
 | format.test.js | truncation, score labels, initials, date display |
 
@@ -70,14 +71,14 @@ Result: **no console errors, no page errors**; screenshots in [assets/screens](a
 
 ## Android verification (emulator, API 35)
 
-Installed the **v2.0.0 signed release APK** (versionCode 3) on the API 35 emulator; proxy via **adb reverse tcp:3001 tcp:3001**.
+Installed the **v2.0.1 signed release APK** (versionCode 4) on the API 35 emulator; proxy via **adb reverse tcp:3001 tcp:3001**.
 
 | Check | Result |
 | --- | --- |
 | Cold start and splash | PASS — cream splash, app loads, splash hides |
 | Status bar and navigation bar | PASS — cream bars, dark icons, gesture handle visible |
 | Three-tab shell (Match / Assistant / Me) | PASS — Ant Design Mobile TabBar, routes switch correctly |
-| Native v2 APK version | PASS — `versionCode 3`, `versionName 2.0.0`, signed |
+| Native v2 APK version | PASS — `versionCode 4`, `versionName 2.0.1`, signed |
 | Real profile persistence | PASS — profile remains after force-stop/relaunch |
 | Ant Design Mobile rendering in WebView | PASS — no page errors |
 | Voice permission | Declared in AndroidManifest (`RECORD_AUDIO`); browser fake-audio E2E covers the full WAV → DeepSeek ASR → input path |
@@ -96,7 +97,7 @@ Installed the **v2.0.0 signed release APK** (versionCode 3) on the API 35 emulat
 | AI analyze (backend, cached RAG) | ~8.5 s for deepseek-flash |
 | AI analyze in the WebView (emulator) | ~22 s including health check and rendering; local result is visible immediately |
 | AI chat | ~2 s |
-| APK size | 4.39 MB signed release v2.0.0 |
+| APK size | ~4.39 MB signed release v2.0.1 |
 | Cold start | Emulator ~3–5 s including splash; a physical device should be faster |
 
 ## Known limitations
@@ -112,4 +113,4 @@ Installed the **v2.0.0 signed release APK** (versionCode 3) on the API 35 emulat
 
 - Screenshots: [assets/screens](assets/screens)
 - Design spec: [superpowers/specs/2026-11-24-offer-catcher-design.md](superpowers/specs/2026-11-24-offer-catcher-design.md)
-- APK: [../release/OfferCatcher-v2.0.0.apk](../release/OfferCatcher-v2.0.0.apk)
+- APK: [../release/OfferCatcher-v2.0.1.apk](../release/OfferCatcher-v2.0.1.apk)

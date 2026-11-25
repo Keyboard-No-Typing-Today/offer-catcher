@@ -33,7 +33,7 @@ export default function AssistantModule() {
   const voice = useVoiceRecorder({ maxSeconds: 60 });
   const stopVoiceRef = useRef(null);
 
-  const topRoles = useMemo(() => {
+  const roleMatches = useMemo(() => {
     if (!profile) return [];
     return ROLE_PROFILES
       .map((role) => {
@@ -41,9 +41,9 @@ export default function AssistantModule() {
         const local = analyzeMatch(profile, jd);
         return { role, jd, local, score: local.score };
       })
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
+      .sort((a, b) => b.score - a.score);
   }, [profile]);
+  const topRoles = useMemo(() => roleMatches.slice(0, 3), [roleMatches]);
 
   useEffect(() => {
     let mounted = true;
@@ -86,7 +86,19 @@ export default function AssistantModule() {
       .map((message) => ({ role: message.role, content: message.content }));
 
     let reply = null;
-    if (settings.aiEnabled && connection === 'ai') {
+    let activeConnection = connection;
+    if (settings.aiEnabled && activeConnection !== 'ai') {
+      try {
+        const health = await checkHealth(settings.apiBaseUrl);
+        if (health?.chat?.enabled) {
+          activeConnection = 'ai';
+          setConnection('ai');
+        }
+      } catch {
+        /* keep local */
+      }
+    }
+    if (settings.aiEnabled && activeConnection === 'ai') {
       try {
         const response = await chatWithAi(settings.apiBaseUrl, {
           messages: history,
@@ -104,6 +116,12 @@ export default function AssistantModule() {
               matchedSkills: (item.local.matchedSkills || []).slice(0, 5),
               missingSkills: (item.local.missingSkills || []).slice(0, 5),
             })),
+            directions: roleMatches.map((item) => ({
+              label: item.role.label,
+              score: item.score,
+              topSkills: (item.role.topSkills || []).slice(0, 6),
+              missingSkills: (item.local.missingSkills || []).slice(0, 5),
+            })),
             resumeSource: 'resume-corpus',
           },
         });
@@ -114,7 +132,7 @@ export default function AssistantModule() {
       }
     }
     if (!reply) {
-      reply = { reply: localMentorReply(text, { profile, topRoles }), mode: 'local' };
+      reply = { reply: localMentorReply(text, { profile, topRoles, roleMatches }), mode: 'local' };
     }
     addChatMessage({ role: 'assistant', content: cleanMarkdown(reply.reply), mode: reply.mode });
     setSending(false);
