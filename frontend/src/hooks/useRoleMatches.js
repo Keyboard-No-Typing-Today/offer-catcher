@@ -4,9 +4,6 @@ import { analyzeMatch, cosineSimilarity, scoreBand } from '../lib/matchEngine.js
 import { embedWithAi } from '../lib/api.js';
 import useAppStore from '../store/useAppStore.js';
 
-const LOCAL_WEIGHT = 0.6;
-const SEMANTIC_WEIGHT = 0.4;
-
 export function useRoleMatches(profile) {
   const settings = useAppStore((state) => state.settings);
   const [cosines, setCosines] = useState(null);
@@ -22,7 +19,7 @@ export function useRoleMatches(profile) {
     let active = true;
     setLoading(true);
     setError('');
-    embedWithAi(settings.apiBaseUrl, [profile.rawText.slice(0, 8000)])
+    embedWithAi(settings.apiBaseUrl, [profile.rawText.slice(0, 8000)], { timeoutMs: 10000 })
       .then((payload) => {
         const vector = payload?.data?.vectors?.[0];
         if (!Array.isArray(vector) || !vector.length) throw new Error('empty embedding');
@@ -61,9 +58,7 @@ export function useRoleMatches(profile) {
         const semanticScore = item.cosine === null || max === null
           ? null
           : max === min ? 50 : Math.round(((item.cosine - min) / (max - min)) * 100);
-        const score = semanticScore === null
-          ? item.local.score
-          : Math.round(item.local.score * LOCAL_WEIGHT + semanticScore * SEMANTIC_WEIGHT);
+        const score = item.local.score;
         const scoreBandValue = scoreBand(score);
         const matched = (item.local.matchedSkills || []).slice(0, 3);
         const missing = (item.local.missingSkills || []).slice(0, 3);
@@ -74,7 +69,7 @@ export function useRoleMatches(profile) {
           semanticRank,
           score,
           band: scoreBandValue,
-          fitSummary: `和「${item.role.label}方向」综合匹配 ${score} 分${semanticRank ? `，Qwen 语义排第 ${semanticRank}` : ''}。共同能力：${matched.join('、') || '暂未命中'}；优先补：${missing.join('、') || '保持当前表达'}。`,
+          fitSummary: `按简历证据，本地匹配 ${score} 分${semanticRank ? `；Qwen 方向语义排第 ${semanticRank}` : ''}。共同能力：${matched.join('、') || '暂未命中'}；优先补：${missing.join('、') || '保持当前表达'}。`,
         };
       })
       .sort((a, b) => b.score - a.score);

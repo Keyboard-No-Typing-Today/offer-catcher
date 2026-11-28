@@ -73,12 +73,17 @@ export function buildAnalysisMessages({ resumeText, jdText, local, examples = []
 }
 
 export function buildChatMessages({ messages, profile, context }) {
+  const section = (key, max) => String(profile?.sections?.[key] || profile?.[key] || '').replace(/\s+/g, ' ').trim().slice(0, max);
   const profileSummary = profile
     ? [
         '姓名：' + (profile.name || '未填写'),
         '学历：' + (profile.educationLabel || '未填写'),
         '经验：约 ' + (profile.yearsExperience || 0) + ' 年',
-        '技能：' + (profile.skills || []).slice(0, 12).join('、'),
+        '技能：' + (profile.skills || []).slice(0, 18).join('、'),
+        '个人简介：' + (section('summary', 700) || '未填写'),
+        '教育经历：' + (section('education', 900) || '未填写'),
+        '实习/工作经历：' + (section('experience', 2200) || '未填写'),
+        '项目经历：' + (section('projects', 2200) || '未填写'),
         '量化结果：' + (profile.quantifiedCount || 0) + ' 处',
       ].join('\n')
     : '尚未导入简历';
@@ -91,6 +96,11 @@ export function buildChatMessages({ messages, profile, context }) {
         '主要差距：' + (context.latestAnalysis.gaps || []).slice(0, 3).join('；'),
       ].join('\n')
     : '暂无分析记录';
+
+  const directions = Array.isArray(context?.directions) ? context.directions.slice(0, 10) : [];
+  const directionSummary = directions.length
+    ? directions.map((item, index) => (index + 1) + '. ' + item.label + '（证据分 ' + item.score + '；待补：' + ((item.missingSkills || []).slice(0, 3).join('、') || '暂无明显缺口') + '）').join('\n')
+    : '暂无方向画像上下文';
 
   const system = [
     '你是 Offer 捕手，一名中文求职助手。',
@@ -108,8 +118,12 @@ export function buildChatMessages({ messages, profile, context }) {
     '【最近一次匹配】',
     analysisSummary,
     '',
-    '【投递记录数】',
-    String(context?.trackerCount || 0),
+    '【方向画像（来自脱敏简历聚合）】',
+    directionSummary,
+    '',
+    '【要求】',
+    '如果用户明确指定了某个方向（例如算法工程师），必须围绕该方向回答，不能擅自替换成“最接近的其他方向”。',
+    '引用简历内容时必须来自上面的档案，不要编造项目或数字。',
   ].join('\n');
 
   return [

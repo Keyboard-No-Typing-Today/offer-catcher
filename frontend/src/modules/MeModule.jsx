@@ -25,6 +25,25 @@ export default function MeModule() {
 
   useEffect(() => { setApiBase(settings.apiBaseUrl); }, [settings.apiBaseUrl]);
 
+  useEffect(() => {
+    if (!settings.aiEnabled) return undefined;
+    let active = true;
+    checkHealth(settings.apiBaseUrl)
+      .then((health) => {
+        if (!active) return;
+        const enabled = Boolean(health?.chat?.enabled);
+        setAiStatus({
+          state: enabled ? 'online' : 'offline',
+          message: enabled ? 'AI 代理已连接' : '代理可达，但聊天模型未配置',
+          models: health || null,
+        });
+      })
+      .catch(() => {
+        if (active) setAiStatus({ state: 'offline', message: '未连接到代理', models: null });
+      });
+    return () => { active = false; };
+  }, [settings.aiEnabled, settings.apiBaseUrl, setAiStatus]);
+
   const status = settings.aiEnabled ? (aiStatus?.state || 'unknown') : 'disabled';
   const samples = ROLE_PROFILES.reduce((sum, role) => sum + (role.sampleCount || 0), 0);
 

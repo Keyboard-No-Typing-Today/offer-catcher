@@ -3,7 +3,7 @@
 **Course:** EE5415 Mobile Applications Design and Development, City University of Hong Kong
 **Project:** Individual project
 **Author:** [Student Name / Student ID]
-**Version:** 2.0.1
+**Version:** 2.0.2
 **Date:** November 2026
 
 ## Abstract
@@ -27,7 +27,7 @@ The project asks a narrower question than "find me a job": **given my resume and
 3. An optional AI proxy that combines DeepSeek chat, Qwen embeddings and a small excellent-resume RAG index, with schema validation, JSON repair and local fallback.
 4. A three-module mobile product — Match, Assistant and Me — built with Ant Design Mobile instead of a wrapped desktop dashboard.
 5. A resume-corpus pipeline that turns 21 user-provided resumes into ten anonymised direction profiles with Qwen embeddings, and a voice-enabled assistant with Markdown resume export.
-6. A verified Capacitor Android v2.0.1 build with native storage, document import, system bar integration, hardware back handling, filesystem export and haptics.
+6. A verified Capacitor Android v2.0.2 build with native storage, document import, system bar integration, hardware back handling, filesystem export and haptics.
 
 ## 2. Related work and competitive analysis
 
@@ -203,7 +203,7 @@ The layout is designed at 390 × 844 CSS px and verified at 360–412 px widths.
 | @capacitor/filesystem | JSON export to Documents |
 | @capacitor/haptics | Feedback on primary actions |
 | WebView file input | Android document picker for PDF/DOCX |
-| RECORD_AUDIO permission | Microphone capture for DeepSeek ASR voice input |
+| RECORD_AUDIO + MODIFY_AUDIO_SETTINGS | Microphone capture for DeepSeek ASR voice input in the WebView |
 
 The app targets SDK 36 with minSdk 24, uses Capacitor 8 and JDK 21, and is signed with a local release keystore that is excluded from git.
 
@@ -215,11 +215,13 @@ The v1 job catalogue was hand-authored sample data, and the v1 demo used a SAMPL
 2. PDFs were parsed with pypdf; JPGs were OCR'd with Tesseract chi_sim+eng.
 3. Contact data was stripped; each direction was summarised by DeepSeek into common skills, experience themes, key points, requirements and keywords.
 4. Each direction profile was embedded with Alibaba Cloud DashScope qwen3.7-text-embedding (1024 dimensions); vectors are shipped in shared/role-profiles.json.
-5. At runtime the candidate resume is embedded once through /api/ai/embed; cosine similarity against the ten vectors produces a semantic rank. Final recommendation score = 60% local match + 40% semantic normalised score, with local-only fallback.
+5. At runtime the candidate resume is embedded once through /api/ai/embed; cosine similarity against the ten vectors produces a semantic rank. The local five-dimension evidence score is the displayed match score and determines recommendation order. The semantic rank is shown separately as a direction reference; it does not inflate the evidence score. Local-only fallback applies when embeddings are unavailable.
 
 This removes mock jobs from the primary flow and gives every recommendation a traceable data source. Raw resumes and OCR text stay local; only anonymised aggregate profiles and vectors are committed.
 
 **Assistant.** The assistant receives the parsed profile and top direction context. With the proxy it calls DeepSeek chat; without it, a local mentor fallback answers from the profile and local match results. It can generate a Markdown resume from the parsed sections and target direction, save it to the Android Documents directory (Filesystem) or download it on the web.
+
+**QA pass (v2.0.2 findings).** A full emulator walkthrough found and fixed five issues: (1) the local fallback ignored an explicitly named direction and listed the three nearest directions; (2) the AI prompt only received a one-line profile and claimed the resume text was missing, so it could not reference project evidence; (3) the Markdown export put the save button after a nested scrollable TextArea, making it effectively unreachable on a phone — the preview is now a bounded scrollable pre block with action buttons visible; (4) the Me page stayed at “未检测” even when the assistant was connected — it now checks health on mount; (5) the blended semantic score inflated “evidence” (a 21/100 skill match could become 71/100), so the local evidence score is now the displayed score and the Qwen rank is a separate reference. A bottom spacer also prevents the last chat bubble from being hidden behind the fixed composer. (6) Native voice recording exposed that WebView audio capture needs both RECORD_AUDIO and MODIFY_AUDIO_SETTINGS; the latter was added and recording now starts on the emulator. The emulator host microphone is silent, so ASR returns “no speech” there; the full audio → DeepSeek ASR path is verified with generated audio and fake-microphone browser tests.
 
 **Named direction handling.** A bug report exposed that the local fallback ignored an explicitly named direction (for example, “help me improve my resume for the algorithm engineer direction”) and listed the three nearest directions instead. The local mentor now detects a named role, returns that direction's local score plus exactly three gap actions, and never silently substitutes a different direction. The same request is also sent to the AI with the full ten-direction context. Regression tests cover both the explicit-direction and nearest-direction cases.
 
@@ -257,7 +259,7 @@ Profile, chat and settings are persisted after every meaningful change. A cold r
 
 ### 5.6 Build and signing
 
-The Android project is generated by Capacitor and built with Gradle 8.14.3 and AGP 8.13.0 on JDK 21. A local keystore signs the release APK; keystore.properties and the .jks file are git-ignored. The v2.0.1 signed release APK is ~4.39 MB (versionCode 4) and is copied to release/OfferCatcher-v2.0.1.apk.
+The Android project is generated by Capacitor and built with Gradle 8.14.3 and AGP 8.13.0 on JDK 21. A local keystore signs the release APK; keystore.properties and the .jks file are git-ignored. The v2.0.2 signed release APK is ~4.39 MB (versionCode 5) and is copied to release/OfferCatcher-v2.0.2.apk.
 
 ## 6. Evaluation
 
@@ -277,13 +279,16 @@ A Playwright mobile walkthrough (390 × 844, DPR 2) covered the v2 onboarding, r
 
 On a Pixel 3a API 35 emulator:
 
-- v2.0.1 APK installed on Pixel 3a API 35 (versionCode 4, versionName 2.0.1).
+- v2.0.2 APK installed on Pixel 3a API 35 (versionCode 5, versionName 2.0.2).
 - Three-tab shell (Match/Assistant/Me), cold start, long-press-free navigation.
-- Native PDF picker and parsing; role-profile matching; real profile persisted across restart.
+- Native PDF picker imported the PM resume (17 skills, 70% completeness); role-profile matching and profile persistence verified across restart.
 - Ant Design Mobile layout renders correctly in the Android WebView.
-- Voice microphone permission declared; web fake-audio E2E verified the complete record → ASR → input flow.
-- Markdown resume download verified on the web; Filesystem path implemented for Android Documents.
-- JSON export (10,374 bytes in the synthetic test) contains the profile and no API keys.
+- AI reply after the prompt fix references the imported PM project evidence (knowledge-base system, internship, Deloitte), instead of claiming the resume is missing.
+- Native Markdown save wrote Documents/OfferCatcher-Resume.md (6,619 bytes); the save button is visible without nested scrolling.
+- Native voice recording starts after adding MODIFY_AUDIO_SETTINGS; the emulator host mic is silent, so ASR reports no speech. Full audio → ASR is covered by generated-WAV and fake-microphone tests.
+- Me page auto-detects and displays “AI 已连接” instead of staying at “未检测”.
+- Evidence score / semantic rank are now shown separately (PM example: 60/100 evidence, semantic #3), avoiding the earlier 21-skill / 71-score contradiction.
+- JSON export (20,380 bytes) contains the profile and no API keys.
 - Hardware back with sheets open and route navigation verified.
 
 A physical-device video is still required by the course and remains for the project owner; the emulator provides functional evidence in the meantime.
@@ -297,7 +302,7 @@ A physical-device video is still required by the course and remains for the proj
 | AI analysis in WebView (emulator) | ~22 s including health check; local result immediate |
 | AI chat | ~2 s |
 | Main bundle | ~513 kB (182 kB gzip, includes Ant Design Mobile) |
-| APK | ~4.39 MB signed release v2.0.1 |
+| APK | ~4.39 MB signed release v2.0.2 |
 
 ### 6.5 Usability observations
 

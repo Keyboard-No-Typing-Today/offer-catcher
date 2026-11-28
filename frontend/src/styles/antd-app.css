@@ -184,7 +184,7 @@ body { color: var(--ink); }
 .m-msg.is-assistant .m-msg-bubble { background: var(--white); color: var(--ink-2); border: 1px solid var(--line); border-bottom-left-radius: 5px; }
 .m-msg-mode { margin-top: 7px; font-size: 8px !important; padding: 1px 5px !important; color: var(--muted) !important; border-color: var(--line) !important; }
 .m-typing { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); }
-.m-chat-end { height: 1px; }
+.m-chat-end { height: calc(120px + var(--safe-bottom)); }
 .m-composer { position: fixed; left: 0; right: 0; bottom: calc(50px + var(--safe-bottom)); z-index: 80; max-width: 620px; margin: 0 auto; padding: 8px 14px 6px; background: rgba(245, 240, 230, 0.97); border-top: 1px solid transparent; backdrop-filter: blur(16px); }
 .m-composer.is-recording { border-top-color: var(--line); }
 .m-composer-row { display: flex; align-items: flex-end; gap: 7px; }
@@ -200,7 +200,7 @@ body { color: var(--ink); }
 .m-recording button { margin-left: auto; border: 0; background: transparent; color: var(--accent-deep); font-size: 10px; text-decoration: underline; text-underline-offset: 3px; }
 @keyframes m-pulse { 50% { opacity: 0.35; } }
 .m-composer-foot { text-align: center; color: var(--muted); font-size: 8px; letter-spacing: 0.04em; padding-top: 5px; }
-.m-markdown-preview { margin-top: 12px; background: var(--white) !important; border: 1px solid var(--line) !important; border-radius: 14px; padding: 12px !important; font-family: var(--font-mono); font-size: 10px; line-height: 1.65; }
+.m-markdown-preview { margin-top: 12px; background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 12px; font-family: var(--font-mono); font-size: 10px; line-height: 1.65; max-height: 38dvh; overflow: auto; white-space: pre-wrap; word-break: break-word; }
 .m-export-sheet { padding-bottom: calc(24px + var(--safe-bottom)); }
 
 /* ---------- me ---------- */

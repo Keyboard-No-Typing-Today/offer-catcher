@@ -71,19 +71,24 @@ Result: **no console errors, no page errors**; screenshots in [assets/screens](a
 
 ## Android verification (emulator, API 35)
 
-Installed the **v2.0.1 signed release APK** (versionCode 4) on the API 35 emulator; proxy via **adb reverse tcp:3001 tcp:3001**.
+Installed the **v2.0.2 signed release APK** (versionCode 5) on the API 35 emulator; proxy via **adb reverse tcp:3001 tcp:3001**.
 
 | Check | Result |
 | --- | --- |
 | Cold start and splash | PASS — cream splash, app loads, splash hides |
 | Status bar and navigation bar | PASS — cream bars, dark icons, gesture handle visible |
 | Three-tab shell (Match / Assistant / Me) | PASS — Ant Design Mobile TabBar, routes switch correctly |
-| Native v2 APK version | PASS — `versionCode 4`, `versionName 2.0.1`, signed |
+| Native v2 APK version | PASS — `versionCode 5`, `versionName 2.0.2`, signed |
+| Native PDF picker | PASS — three PDFs visible in Downloads; PM imported |
 | Real profile persistence | PASS — profile remains after force-stop/relaunch |
 | Ant Design Mobile rendering in WebView | PASS — no page errors |
-| Voice permission | Declared in AndroidManifest (`RECORD_AUDIO`); browser fake-audio E2E covers the full WAV → DeepSeek ASR → input path |
-| Markdown export | PASS on web download; native Filesystem target is Documents/OfferCatcher-Resume.md |
-| JSON export | PASS on web (10,374 bytes); no API keys |
+| Native PDF import | PASS — PM PDF selected from Downloads; profile parsed to 17 skills / 70% |
+| AI resume context | PASS — reply references the imported PM project/internship/Deloitte evidence; no “resume missing” claim |
+| Native Markdown save | PASS — Documents/OfferCatcher-Resume.md, 6,619 bytes; save action visible |
+| Voice permission | PASS — recording starts after RECORD_AUDIO + MODIFY_AUDIO_SETTINGS; emulator host mic is silent so ASR reports no speech; full ASR path covered with generated WAV + fake mic |
+| Me AI status | PASS — shows “AI 已连接” after mount health check |
+| Evidence/semantic separation | PASS — PM evidence 60/100, semantic #3; no inflated score |
+| JSON export | PASS — 20,380 bytes to Documents; no API keys |
 | Hardware back | PASS for sheets and route navigation |
 | Native PDF parser cleanup | Fixed — loadingTask.destroy() after pdfjs-dist 6 incompatibility |
 | React 19 + antd-mobile crash | Fixed — downgraded to React 18.3, page errors eliminated |
@@ -97,7 +102,7 @@ Installed the **v2.0.1 signed release APK** (versionCode 4) on the API 35 emulat
 | AI analyze (backend, cached RAG) | ~8.5 s for deepseek-flash |
 | AI analyze in the WebView (emulator) | ~22 s including health check and rendering; local result is visible immediately |
 | AI chat | ~2 s |
-| APK size | ~4.39 MB signed release v2.0.1 |
+| APK size | ~4.39 MB signed release v2.0.2 |
 | Cold start | Emulator ~3–5 s including splash; a physical device should be faster |
 
 ## Known limitations
@@ -113,4 +118,4 @@ Installed the **v2.0.1 signed release APK** (versionCode 4) on the API 35 emulat
 
 - Screenshots: [assets/screens](assets/screens)
 - Design spec: [superpowers/specs/2026-11-24-offer-catcher-design.md](superpowers/specs/2026-11-24-offer-catcher-design.md)
-- APK: [../release/OfferCatcher-v2.0.1.apk](../release/OfferCatcher-v2.0.1.apk)
+- APK: [../release/OfferCatcher-v2.0.2.apk](../release/OfferCatcher-v2.0.2.apk)

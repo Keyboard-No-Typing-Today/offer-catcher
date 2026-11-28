@@ -108,6 +108,10 @@ export default function AssistantModule() {
             yearsExperience: profile.yearsExperience,
             educationLabel: profile.educationLabel,
             quantifiedCount: profile.quantifiedCount,
+            summary: (profile.sections?.summary || '').slice(0, 800),
+            education: (profile.sections?.education || '').slice(0, 1000),
+            experience: (profile.sections?.experience || '').slice(0, 2400),
+            projects: (profile.sections?.projects || '').slice(0, 2400),
           } : null,
           context: {
             topRoles: topRoles.map((item) => ({
@@ -320,7 +324,7 @@ export default function AssistantModule() {
               <div className="m-muted">当前导出 Markdown；PDF 版本列为下一步。</div>
             </div>
           </div>
-          <TextArea value={markdown} readOnly autoSize={{ minRows: 12, maxRows: 20 }} className="m-markdown-preview" />
+          <pre className="m-markdown-preview">{markdown}</pre>
           <div className="m-sheet-actions">
             <Button block color="primary" size="large" onClick={doSaveMarkdown}>保存 / 下载 .md</Button>
             <Button block fill="outline" onClick={() => setExportOpen(false)}>收起</Button>

@@ -74,8 +74,8 @@ export async function chatWithAi(baseUrl, payload) {
   return request(baseUrl, '/ai/chat', { method: 'POST', body: payload, timeoutMs: 60000 });
 }
 
-export async function embedWithAi(baseUrl, texts) {
-  return request(baseUrl, '/ai/embed', { method: 'POST', body: { texts }, timeoutMs: 45000 });
+export async function embedWithAi(baseUrl, texts, options = {}) {
+  return request(baseUrl, '/ai/embed', { method: 'POST', body: { texts }, timeoutMs: options.timeoutMs || 45000 });
 }
 
 export async function transcribeAudio(baseUrl, { audio, mimeType = 'audio/wav' }) {

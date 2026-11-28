@@ -45,9 +45,12 @@ export default function MatchModule() {
   );
   const displaySkills = useMemo(() => {
     const roleSkills = new Set(ROLE_PROFILES.flatMap((role) => role.topSkills || []));
-    return [...(profile?.skills || [])]
-      .sort((a, b) => Number(roleSkills.has(b.name)) - Number(roleSkills.has(a.name)))
-      .slice(0, 8);
+    const skills = [...(profile?.skills || [])];
+    const relevant = skills.filter((skill) => roleSkills.has(skill.name));
+    const pool = relevant.length >= 3
+      ? relevant
+      : skills.sort((a, b) => Number(roleSkills.has(b.name)) - Number(roleSkills.has(a.name)));
+    return pool.slice(0, 8);
   }, [profile]);
 
   async function applyResume(text, fileName = '粘贴的简历', fileType = 'text/plain') {
@@ -213,9 +216,9 @@ export default function MatchModule() {
         <Card className="m-card m-best-card" onClick={() => setSelected(best)}>
           <div className="m-best-top">
             <div>
-              <div className="m-eyebrow m-eyebrow-light">BEST FIT</div>
+              <div className="m-eyebrow m-eyebrow-light">BEST EVIDENCE</div>
               <div className="m-best-title">{best.role.label}</div>
-              <div className="m-best-desc">{best.band.label} · {best.role.sampleCount} 份样本共同点</div>
+              <div className="m-best-desc">{best.band.label} · 证据匹配 · {best.role.sampleCount} 份样本共同点</div>
             </div>
             <div className="m-big-score" style={{ color: scoreColor(best.score) }}>
               {best.score}<small>/100</small>
@@ -257,7 +260,7 @@ export default function MatchModule() {
 
       <div className="m-source-note">
         <CheckCircle2 size={13} />
-        <span>{ROLE_SOURCE} 语义排序使用 Aliyun Qwen embedding。</span>
+        <span>{ROLE_SOURCE} 本地证据分决定推荐排序；Aliyun Qwen embedding 语义排名作为方向参考。</span>
       </div>
 
       <Popup
@@ -290,7 +293,7 @@ function RoleDetail({ item, onClose, onAsk }) {
         <div>
           <div className="m-eyebrow">DIRECTION FIT</div>
           <h2>{item.role.label}</h2>
-          <div className="m-muted">{item.band.label} · 综合 {item.score} 分</div>
+          <div className="m-muted">{item.band.label} · 证据分 {item.score}</div>
         </div>
         <div className="m-sheet-score" style={{ color: scoreColor(item.score) }}>{item.score}</div>
       </div>

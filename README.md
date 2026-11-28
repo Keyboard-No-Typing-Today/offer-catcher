@@ -3,7 +3,7 @@
 **把简历变成可解释的岗位匹配。**  
 一个本地优先的 Android 求职助手：导入简历 → 匹配方向 → 和助手一起改简历 → 导出 Markdown。
 
-> 当前版本 **v2.0.1** · EE5415 Individual Project · City University of Hong Kong
+> 当前版本 **v2.0.2** · EE5415 Individual Project · City University of Hong Kong
 
 ![匹配页](docs/assets/screens/v2-match.png)
 
@@ -46,7 +46,7 @@ v2 的简历导出是 **Markdown**，这是有意的 P0 取舍：
 - **原始简历不进入仓库**：resumes/ 是本地数据，已 gitignore；仓库只保留脱敏聚合后的画像和 1024 维向量。
 - 文本提取：PDF 用 pypdf；JPG 用 Tesseract 中文 OCR。
 - 方向画像：DeepSeek 对每个方向的简历文本归纳共同技能、经历主题、关键点、要求和关键词。
-- 语义排序：10 个画像用 Qwen embedding 预计算；候选人简历通过代理 /api/ai/embed 做一次 embedding，和画像算余弦相似度；最终分 = 60% 本地 + 40% 语义。
+- 语义排序：10 个画像用 Qwen embedding 预计算；候选人简历通过代理 /api/ai/embed 做一次 embedding，和画像算余弦相似度；本地五维证据分决定推荐排序；Qwen 语义排名作为方向参考单独展示，不把语义分混进匹配分。
 - 岗位画像是“这个方向的候选人通常具备什么”，**不是实时招聘岗位**；真实 JD 仍建议通过粘贴方式分析。
 
 详见 [resume-corpus-analysis.md](docs/resume-corpus-analysis.md)。
@@ -80,7 +80,7 @@ Android 模拟器/真机：
 
 ~~~bash
 adb reverse tcp:3001 tcp:3001
-adb install -r release/OfferCatcher-v2.0.1.apk
+adb install -r release/OfferCatcher-v2.0.2.apk
 ~~~
 
 模拟器上 AI 代理通过 adb reverse 访问；如果使用 Wi-Fi 真机，在「我的 → 代理地址」里改成电脑局域网 IP。
@@ -96,18 +96,19 @@ cd frontend/android && gradlew.bat assembleRelease
 
 - Web E2E：真实 PDF 导入、匹配、助手对话、Markdown 下载、数据导出，0 console error。
 - 语音：用 fake audio + Chrome 真实走通 录音 → DeepSeek ASR → 输入框。
-- Android：v2.0.1（versionCode 4）已构建为 signed release APK。
+- Android：v2.0.2（versionCode 5）已构建为 signed release APK。
 
 ## 交付物
 
 | 交付物 | 链接 |
 | --- | --- |
-| 签名 APK | [release/OfferCatcher-v2.0.1.apk](release/OfferCatcher-v2.0.1.apk) |
+| 签名 APK | [release/OfferCatcher-v2.0.2.apk](release/OfferCatcher-v2.0.2.apk) |
 | Final Report | [PDF](docs/OfferCatcher_Final_Report.pdf) · [Markdown](docs/report.md) |
 | Proposal | [PDF](docs/OfferCatcher_Proposal.pdf) · [Markdown](docs/proposal.md) |
 | Presentation | [PDF](docs/slides/OfferCatcher_EE5415_Slides.pdf) · [PPTX](docs/slides/OfferCatcher_EE5415_Slides.pptx) |
 | 语料分析 | [resume-corpus-analysis.md](docs/resume-corpus-analysis.md) |
 | Testing | [docs/testing.md](docs/testing.md) |
+| Emulator QA pass | [docs/qa-review-v2.0.2.md](docs/qa-review-v2.0.2.md) |
 | Demo script | [docs/demo-script.md](docs/demo-script.md) |
 
 ## 限制
